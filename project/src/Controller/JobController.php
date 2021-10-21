@@ -10,7 +10,7 @@ class JobController extends AbstractController
 {
 
     /**
-     * @Route("/job" name="index")
+     * @Route("/job", name="index")
      * @return Response
      */
     public function index(): Response
@@ -29,6 +29,19 @@ class JobController extends AbstractController
         return $this->render('job/home.html.twig', [
             'controller_name' => 'JobController',
             'route' => '/home',
+        ]);
+    }
+
+    /**
+     * @Route("/voir/{id}", name="voir", requirements={"id"= "\d+"})
+     * @param $id
+     * @return Response
+     */
+    public function voir($id): Response
+    {
+        return $this->render('job/voir.html.twig', [
+            'controller_name' => 'JobController',
+            'id' => $id,
         ]);
     }
 }
