@@ -21,27 +21,38 @@ class JobController extends AbstractController
     }
 
     /**
-     * @Route("/job/home", name="JobHome")
+     * @Route("/list/{id}", name="listId", requirements={"id"= "\d+"})
+     * @param $id
      * @return Response
      */
-    public function home(): Response
+    public function listId($id): Response
     {
-        return $this->render('job/home.html.twig', [
+        return $this->render('job/list.html.twig', [
             'controller_name' => 'JobController',
-            'route' => '/home',
+            'id' => $id,
         ]);
     }
 
     /**
-     * @Route("/voir/{id}", name="voir", requirements={"id"= "\d+"})
-     * @param $id
+     * @Route("/list", name="list")
      * @return Response
      */
-    public function voir($id): Response
+    public function list(): Response
     {
-        return $this->render('job/voir.html.twig', [
+        return $this->render('job/list.html.twig', [
             'controller_name' => 'JobController',
-            'id' => $id,
+        ]);
+    }
+
+    public function menu(): Response
+    {
+        $myMenu = array(
+            ['route' => 'job', 'label' => 'Accueil'],
+            ['route' => 'ajouter', 'label' => 'Ajouter un job'],
+            ['route' => 'list', 'label' => 'Afficher tous les jobs']
+        );
+        return $this->render('job/menu.html.twig', [
+            'menu' => $myMenu
         ]);
     }
 }
