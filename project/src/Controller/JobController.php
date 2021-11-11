@@ -44,10 +44,6 @@ class JobController extends AbstractController
     {
         $jobs = $this->getDoctrine()->getRepository(Job::class)->findAll();
 
-        if (!$jobs) {
-            throw $this->createNotFoundException('No jobs found.');
-        }
-
         return $this->render('job/list.html.twig', array('jobs' => $jobs));
     }
 

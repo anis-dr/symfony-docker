@@ -18,6 +18,9 @@
     </style>
 
     <div class="example-wrapper">
+        {% if jobs is empty %}
+            <h2>No jobs found!</h2>
+        {% endif %}
         {% for job in jobs %}
             <p>{{ job.title }}</p>
         {% endfor %}
