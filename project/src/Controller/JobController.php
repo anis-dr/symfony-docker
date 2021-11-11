@@ -55,4 +55,16 @@ class JobController extends AbstractController
             'menu' => $myMenu
         ]);
     }
+
+    public function sidebar(): Response
+    {
+        $sideBar = array(
+            ['id' => 1, 'job' => 'Developer web'],
+            ['id' => 2, 'job' => 'Responsable marketing'],
+            ['id' => 3, 'job' => 'Team Leader']
+        );
+        return $this->render('job/sidebar.html.twig', [
+            'sidebar' => $sideBar
+        ]);
+    }
 }

@@ -1,0 +1,8 @@
+<ul class="nav flex-column">
+    {% for item in sidebar %}
+        <li class="nav-item">
+            {# Add active class to indicate active route #}
+            <a class="nav-link" aria-current="page" href="#">{{ item['job'] }}</a>
+        </li>
+    {% endfor %}
+</ul>
