@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Job;
+use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class JobController extends AbstractController
@@ -39,9 +42,13 @@ class JobController extends AbstractController
      */
     public function list(): Response
     {
-        return $this->render('job/list.html.twig', [
-            'controller_name' => 'JobController',
-        ]);
+        $jobs = $this->getDoctrine()->getRepository(Job::class)->findAll();
+
+        if (!$jobs) {
+            throw $this->createNotFoundException('No jobs found.');
+        }
+
+        return $this->render('job/list.html.twig', array('jobs' => $jobs));
     }
 
     public function menu(): Response
@@ -66,5 +73,26 @@ class JobController extends AbstractController
         return $this->render('job/sidebar.html.twig', [
             'sidebar' => $sideBar
         ]);
+    }
+
+    /**
+     * @Route("/ajouter", name="jouterJob")
+     * @return Response
+     */
+    public function ajouter(): Response
+    {
+        $job = new Job();
+        $job->setTitle('Developer Symphony');
+        $job->setCompany('Sloth-Lab');
+        $job->setDescription('Nous recherchons un Developper symphony expert...');
+        $job->setIsActivated(1);
+        $job->setExpireAt(new DateTimeImmutable());
+        $job->setEmail('anis@gmail.com');
+
+        $em = $this->getDoctrine()->getmanager();
+        $em->persist($job);
+        $em->flush();
+
+        return $this->render('job/ajouter.html.twig');
     }
 }

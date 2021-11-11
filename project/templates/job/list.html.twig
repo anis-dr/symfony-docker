@@ -18,15 +18,8 @@
     </style>
 
     <div class="example-wrapper">
-        <h1>Hello {{ controller_name }} ✅</h1>
-
-        This friendly message is coming from:
-        <ul>
-            <li>Your controller at <code><a
-                            href="{{ '/var/www/project/src/Controller/JobController.php'|file_link(0) }}">src/Controller/JobController.php</a></code>
-            </li>
-            <li>Your template at <code><a href="{{ '/var/www/project/templates/job/index.html.twig'|file_link(0) }}">templates/job/index.html.twig</a></code>
-            </li>
-        </ul>
+        {% for job in jobs %}
+            <p>{{ job.title }}</p>
+        {% endfor %}
     </div>
 {% endblock %}
