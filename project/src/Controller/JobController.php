@@ -2,11 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Candidature;
 use App\Entity\Job;
 use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class JobController extends AbstractController
@@ -30,8 +30,13 @@ class JobController extends AbstractController
      */
     public function listId($id): Response
     {
-        return $this->render('job/list.html.twig', [
+        $job = $this->getDoctrine()->getRepository(Job::class)->findOneBy(['id' => $id]);
+        $candidatures = $this->getDoctrine()->getRepository(Candidature::class)->findBy(['job' => $job]);
+
+        return $this->render('job/job.html.twig', [
             'controller_name' => 'JobController',
+            'job' => $job,
+            'candidatures' => $candidatures,
             'id' => $id,
         ]);
     }
@@ -85,8 +90,16 @@ class JobController extends AbstractController
         $job->setExpireAt(new DateTimeImmutable());
         $job->setEmail('anis@gmail.com');
 
+        // insert condidature
+        $candidature = new Candidature();
+        $candidature->setCondidat('Anis');
+        $candidature->setDate(new DateTimeImmutable());
+        $candidature->setContinu("Lorem ipsum dolor sit amet, consectetuer adipiscing elit.");
+        $candidature->setJob($job);
+
         $em = $this->getDoctrine()->getmanager();
         $em->persist($job);
+        $em->persist($candidature);
         $em->flush();
 
         return $this->render('job/ajouter.html.twig');

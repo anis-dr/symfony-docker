@@ -60,9 +60,15 @@ class Job
      */
     private $candidatures;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Category::class, mappedBy="job")
+     */
+    private $categories;
+
     public function __construct()
     {
         $this->candidatures = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -179,6 +185,33 @@ class Job
             if ($candidature->getJob() === $this) {
                 $candidature->setJob(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Category[]
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+            $category->addJob($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): self
+    {
+        if ($this->categories->removeElement($category)) {
+            $category->removeJob($this);
         }
 
         return $this;
